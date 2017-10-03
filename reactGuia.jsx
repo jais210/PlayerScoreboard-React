@@ -46,18 +46,23 @@ const Option = ( {index, option, model} ) => {
       console.log('value: ', option);
       model.setAnswerAt(option, index);
    };
-
+   let classss='hola';
+   let color='red';
+   let estilo={
+      backgroundColor:color,
+      color:'blue'
+   }
    return (
       <div>
          <div>
-            <span> { String.fromCharCode(65 + index)} -  </span>
+            <span className={classss} style={estilo}> { String.fromCharCode(65 + index)} -  </span>
             <button onClick = {onOptionSelect} >  {option} </button>
          </div>
       </div>);
 };
 
-const TriviaApp = ({title, model}) => {
-   let optionList = '';
+const TriviaApp = ({title, model}) => {// no usa el title.....Una propiedad que se convierte en atributo de mi fututa etiqueta
+   let optionList = ''; // objetos solo cumplen su función ahí
    let yourAnswers = '';
    const onSubmit = () => {
       console.log ('onSubmit');      
@@ -111,13 +116,13 @@ const TriviaApp = ({title, model}) => {
    );
 }
 
-let model = new Model();
+let modelo = new Model();
 let counter = 1;
 
 let render = () => {// let render es una función// Ojito
-   console.log('render times: ', counter++);
+   console.log('render times: ', counter++); // actulizar DOM
    ReactDOM.render(
-      <TriviaApp title="TodoApp" model={model} />,
+      <TriviaApp title="TodoApp" model={modelo} />,
       document.getElementById('container')
    );
 };
