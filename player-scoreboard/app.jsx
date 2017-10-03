@@ -1,6 +1,8 @@
 // MODELO
+// Dentro del MODELO puedo usar JS ES6 (ECMAScript 6)
+// evitar usar los string tamplete `${}`
 /*Dento de la clase, en la parte del constructor deben ir 
-todos los datos que necesito para el dinamismo.
+todos los datos que necesito para luego generar el dinamismo.
 Dichos datos deben iniciarse por defecto o en cero.
 Los DATOS estátitos son las propiedades.
 El dinamismo son lo métodos (funciones).
@@ -76,36 +78,24 @@ class Model {
 
 }
 
-// function score (){
-//   // recorro el arreglo para sacar de cada objeto solo su score
-// 	return players.map((player) =>{
-// 		return (player.score);
-// 	});
-// }
-
-// function addScore (){
-//   // recorro cada objeto para coger su score y devolver la suma total
-// 	let scores = score(players);
-// 	return scores.reduce((back,now) =>{
-// 		return back+ now;
-// 	},0);
-// }
-
 // VISTA
-
-function show (){
-  return players.map((player, index)=>{
+/**
+ * Para mostrar el html con React creo las const(que son como funciones);
+ * Aquí cambia la sintaxis
+ */
+const Show = ()=>{
+  return model.players.map((p, i)=>{
 	return (
 		<div className="player">
 			<div className="player-name">
-				<center><strong>{player.name}</strong></center> 
+				<center><strong>{model.player.name}</strong></center> 
 			</div>
 			<div className="player-score counter">
 				<div className="counter-action decrement">
 					-
 				</div>
 				<div className="counter-score">
-					{player.score}
+					{model.player.score}
 				</div>
 				<div className=" counter-action increment">
 					+
@@ -117,22 +107,22 @@ function show (){
 }
 // etiquetas
 
-const Header = (props) => {
+const Header = ({model}) => {
   	return(
 		<div className="header">
 			<div className="stats">
 				<table>
 					<tr>
 						<td>Player: </td>
-						<td className="letter"><strong>{props.players.length}</strong></td>
+						<td className="letter"><strong>{model.addPlayers(model.players)}</strong></td>
 					</tr>
 					<tr>
 						<td>Total Points: </td>
-						<td className="letter"><strong>{addScore(props.players)}</strong></td>
+						<td className="letter"><strong>{model.addScore(model.players)}</strong></td>
 					</tr>
 				</table>
 			</div>
-			<h1><strong>{props.title}</strong></h1>
+			<h1><strong>{model.title}</strong></h1>
 			<div className="stopwatch">
 				<h2>STOPWATCH</h2>
 				<div className="stopwatch-time">
@@ -147,13 +137,13 @@ const Header = (props) => {
   	);
 } 
 
-const List = (props) => {
+const List = ({model}) => {
   return (
-	  <div>{show(props.players)}</div> 
+	  <div>{show(model.players)}</div> 
   );
 }
 
-const Form = (props) => {
+const Form = ({model}) => {
   return (
 	<div className="add-player-form">
 		<form>
@@ -163,7 +153,7 @@ const Form = (props) => {
 	</div>
   );
 }
-
+let model = new Model();
 // creo la etiqueta que contiene las demás etiquetas
 const TableroScore = ({title, players}) => {
    return (
@@ -175,4 +165,4 @@ const TableroScore = ({title, players}) => {
    );
 }
 
-ReactDOM.render(<TableroScore title="Scoreboard" players = {players}/>, document.getElementById('container'));
+ReactDOM.render(<TableroScore title="Scoreboard" model = {model}/>, document.getElementById('container'));
