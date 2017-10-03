@@ -15,47 +15,83 @@ class Model {
     */ 
     this.players = [
       // arreglo de objetos
-      { name: "Jim Hoskins",
+      { name: "Jim Hokins",
         score: 31,
         id: 1,
       },
-      { name: "Andree Hoskins",
+      { name: "Andre Hokins",
         score: 35,
         id: 2,
       },
-      { name: "Alena Hoskins",
+      { name: "Elena Hokins",
         score: 42,
         id: 3,
       },
     ];
-    this.callback= null;  // ver utilidad
-    this.totalPlayer= 0;
-    this.totalPoints= 0;
+    this.callback = null;  // ver utilidad
+    this.inputValue = null;
+    this.totalPlayers= 0;//  3?
+    this.totalScores= 0;// 108?
+    
     }
    // al finalizar incluir el Watch (buscar documentación)
   subscribe(render) { // cada vez que se añada un nuevo elemento se actualiza el DOM virtual
-    this.callback = render;
+    this.callback = render;     
+  }  
+
   addPlayers(){
-    let newPlayer=  
-  }  
-  }  
+      this.players.push({
+      name: this.inputValue,
+      score: 0,
+      id: this.players[i+1]
+   });
+   subscribe();
+  } 
+
+  score(){
+    // recorro el arreglo para sacar de cada objeto solo su score
+    return this.players.map((p) =>{
+      return (p.score);
+    });
+  }
+  // se actualiza con eso???? WHAT?
+// falta actualizar los valores
+  addScoreAllPlayers(){
+    let allScore = score(this.players);
+    allScore.reduce((back,now)=>{
+      return back+now;
+    },108);//this.totalPlayers?
+  }
+  numbPlayers(){
+    return this.players.map((p)=>{
+      return (p.id);
+    });
+  }
+  addNumbAllPlayers(){
+    let allPlayers = numbPlayers(this.players);
+    allPlayers.reduce((back,now)=>{
+      return back+now;
+    },3);// this.totalScores?
+  }
+
 }
+
+// function score (){
+//   // recorro el arreglo para sacar de cada objeto solo su score
+// 	return players.map((player) =>{
+// 		return (player.score);
+// 	});
+// }
+
+// function addScore (){
+//   // recorro cada objeto para coger su score y devolver la suma total
+// 	let scores = score(players);
+// 	return scores.reduce((back,now) =>{
+// 		return back+ now;
+// 	},0);
+// }
 
 // VISTA
-function score (){
-  // recorro el arreglo para sacar de cada objeto solo su score
-	return players.map((player) =>{
-		return (player.score);
-	});
-}
-
-function addScore (){
-  // recorro cada objeto para coger su score y devolver la suma total
-	let scores = score(players);
-	return scores.reduce((back,now) =>{
-		return back+ now;
-	},0);
-}
 
 function show (){
   return players.map((player, index)=>{
