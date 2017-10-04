@@ -8,72 +8,69 @@ Los DATOS estátitos son las propiedades.
 El dinamismo son lo métodos (funciones).
 En mi clase colocaré todo aquello que me servirá para
 construir el dinamismo y los componentes REACT */
+ const AllPlayers = [
+  // arreglo de objetos
+  { name: "Jim Hokins",
+    score: 31,
+    id: 1,
+  },
+  { name: "Andre Hokins",
+    score: 35,
+    id: 2,
+  },
+  { name: "Elena Hokins",
+    score: 42,
+    id: 3,
+  },
+];
 class Model {
-  constructor(){
+  constructor(players){
+    this.players=players;
+    this.inputValue = null;
     /* Dentro del constructor se llama a sus elementos con
     THIS. Fuera de la clase para llamar 
     a sus elementos se referencia primero al nombre de la clase, seguida 
     de un punto, y luego el nombre de la propiedad o método de la clase
-    */ 
-    this.players = [
-      // arreglo de objetos
-      { name: "Jim Hokins",
-        score: 31,
-        id: 1,
-      },
-      { name: "Andre Hokins",
-        score: 35,
-        id: 2,
-      },
-      { name: "Elena Hokins",
-        score: 42,
-        id: 3,
-      },
-    ];
-    this.callback = null;  // ver utilidad
-    this.inputValue = null;
-    this.totalPlayers= 0;//  3?
-    this.totalScores= 0;// 108?
-    
+    */      
     }
    // al finalizar incluir el Watch (buscar documentación)
-  subscribe(render) { // cada vez que se añada un nuevo elemento se actualiza el DOM virtual
-    this.callback = render;     
+  notify(render) { // cada vez que se añada un nuevo elemento se actualiza el DOM virtual
+    this.render();    
   }  
 
-  addPlayers(){
+  subscribe(render){
+    this.render = render;
+  }
+
+  addPlayers(text){
       this.players.push({
-      name: this.inputValue,
+      name: text.value,
       score: 0,
-      id: this.players[i+1]
+      id: this.players.lenght+1
    });
-   subscribe();
+   text.value= '';
+   this.notify();
   } 
 
   score(){
     // recorro el arreglo para sacar de cada objeto solo su score
-    return this.players.map((p) =>{
-      return (p.score);
+    return this.players.map((player) =>{
+      return (player.score);
     });
   }
   // se actualiza con eso???? WHAT?
 // falta actualizar los valores
   addScoreAllPlayers(){
-    let allScore = score(this.players);
+    let allScore = this.score(this.players);
     allScore.reduce((back,now)=>{
-      return back+now;
-    },108);//this.totalPlayers?
-  }
-  numbPlayers(){
-    return this.players.map((p)=>{
-      return (p.id);
+      return back + now;
     });
   }
-  addNumbAllPlayers(){
-    let allPlayers = numbPlayers(this.players);
-    allPlayers.reduce((back,now)=>{
-      return back+now;
-    },3);// this.totalScores?
+  subscribe(render) {
+    this.render = render;
+  }
+  notify() {
+    this.render();
   }
 
 }
@@ -83,19 +80,20 @@ class Model {
  * Para mostrar el html con React creo las const(que son como funciones);
  * Aquí cambia la sintaxis
  */
-const Show = ()=>{
-  return model.players.map((p, i)=>{
+const ShowPlayer = ({player})=>{
+  console.log({player})
+  return model.player.map((p, i)=>{
 	return (
-		<div className="player">
+		<div className="player" key={player.id}>
 			<div className="player-name">
-				<center><strong>{model.player.name}</strong></center> 
+				<center><strong>{player.name}</strong></center> 
 			</div>
 			<div className="player-score counter">
 				<div className="counter-action decrement">
 					-
 				</div>
 				<div className="counter-score">
-					{model.player.score}
+					{player.score}
 				</div>
 				<div className=" counter-action increment">
 					+
@@ -107,18 +105,18 @@ const Show = ()=>{
 }
 // etiquetas
 
-const Header = ({model}) => {
+const Header = ({ model }) => {
   	return(
 		<div className="header">
 			<div className="stats">
 				<table>
 					<tr>
-						<td>Player: </td>
-						<td className="letter"><strong>{model.addPlayers(model.players)}</strong></td>
+						<td>Players: </td>
+						<td className="letter"><strong>{model.players.lenght}</strong></td>
 					</tr>
 					<tr>
 						<td>Total Points: </td>
-						<td className="letter"><strong>{model.addScore(model.players)}</strong></td>
+						<td className="letter"><strong>{model.addScoreAllPlayers()}</strong></td>
 					</tr>
 				</table>
 			</div>
@@ -137,32 +135,59 @@ const Header = ({model}) => {
   	);
 } 
 
-const List = ({model}) => {
+const List = ({ model }) => {
   return (
-	  <div>{show(model.players)}</div> 
+	  <div>
+      {
+        model.players.map( player => {
+         return <Player player={player} />
+
+        })
+      }
+    </div>   
+    
+  );
+}  
+const Player = ({ player }) => {
+  
+  return (
+    <div className='player' key={player.id}>
+      <div className='player-name'>{player.name}</div>
+      <div className='player-score counter'>
+        <button className='counter-action decrement'>-</button>
+        <span className='counter-score'>{player.score}</span>
+        <button className='counter-action increment' >+</button>
+      </div>
+    </div>
   );
 }
 
 const Form = ({model}) => {
   return (
 	<div className="add-player-form">
-		<form>
-			<input type="text"placeholder="ENTER A NAME"/>
+		<form onSubmit={e =>{e.preventDefault();
+      model.addPlayers(model.inputValue);
+      }}>
+			<input type="text"placeholder="ENTER A NAME" onChange={e =>(model.inputValue = e.target)}/>
 			<input type="submit" value="ADD PLAYER"/>
 		</form>
 	</div>
   );
 }
-let model = new Model();
+let model = new Model(AllPlayers);
 // creo la etiqueta que contiene las demás etiquetas
-const TableroScore = ({title, players}) => {
+const TableroScore = ({title, model}) => {
    return (
 	 <div className="scoreboard">
-		<Header players={players} title={title}/>
-		<List players={players}/>
-		<Form />
+		<Header model={model} title={title}/>
+		<List model={model}/>
+		<Form model={model}/>
 	  </div>      
    );
 }
+let render = () =>{
+  ReactDOM.render(<TableroScore title="Scoreboard" model = {model}/>, document.getElementById('container'));
+}
 
-ReactDOM.render(<TableroScore title="Scoreboard" model = {model}/>, document.getElementById('container'));
+model.subscribe(render);
+render();
