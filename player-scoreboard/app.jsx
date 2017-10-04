@@ -78,13 +78,7 @@ class Model {
     player.score++;
     this.notify();
   }
-  subscribe(render) {
-    this.render = render;
-  }
-  notify() {
-    this.render();
-  }
-
+ 
 }
 
 // VISTA
