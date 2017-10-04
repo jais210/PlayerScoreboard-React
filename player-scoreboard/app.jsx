@@ -1,4 +1,4 @@
-// MODELO
+/**Comentario Proyecto */
 // Dentro del MODELO puedo usar JS ES6 (ECMAScript 6)
 // evitar usar los string tamplete `${}`
 /*Dento de la clase, en la parte del constructor deben ir 
@@ -8,6 +8,13 @@ Los DATOS estátitos son las propiedades.
 El dinamismo son lo métodos (funciones).
 En mi clase colocaré todo aquello que me servirá para
 construir el dinamismo y los componentes REACT */
+/* Dentro del constructor se llama a sus elementos con
+    THIS. Fuera de la clase para llamar 
+    a sus elementos se referencia primero al nombre de la clase, seguida 
+    de un punto, y luego el nombre de la propiedad o método de la clase
+    */   
+
+// MODELO
  const AllPlayers = [
   // arreglo de objetos
   { name: "Jim Hokins",
@@ -25,15 +32,11 @@ construir el dinamismo y los componentes REACT */
 ];
 class Model {
   constructor(players){
-    this.players= players;
+    this.players= players; // player contiene a mi array de objetos y será instanciado con New 
     this.inputValue = null;
-    /* Dentro del constructor se llama a sus elementos con
-    THIS. Fuera de la clase para llamar 
-    a sus elementos se referencia primero al nombre de la clase, seguida 
-    de un punto, y luego el nombre de la propiedad o método de la clase
-    */      
+       
     }
-   // al finalizar incluir el Watch (buscar documentación)
+  
   notify(render) { // cada vez que se añada un nuevo elemento se actualiza el DOM virtual
     this.render();    
   }  
@@ -66,12 +69,12 @@ class Model {
     });
     
   }
-  down(player) {
+  down(player) {// decremento; el parámetro ingresado será el array de objetos
     player.score--;
     this.notify();
   }
 
-  up(player) {
+  up(player) {// incremento; el parámetro ingresado será el array de objetos
     player.score++;
     this.notify();
   }
@@ -89,7 +92,7 @@ class Model {
  * Para mostrar el html con React creo las const(que son como funciones);
  * Aquí cambia la sintaxis
  */
-const ShowPlayer = ({player})=>{
+const ShowPlayer = ({player})=>{// player es mi array de objetos
   
   return model.player.map((p, i)=>{
 	return (
