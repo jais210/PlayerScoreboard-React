@@ -25,7 +25,7 @@ construir el dinamismo y los componentes REACT */
 ];
 class Model {
   constructor(players){
-    this.players=players;
+    this.players= players;
     this.inputValue = null;
     /* Dentro del constructor se llama a sus elementos con
     THIS. Fuera de la clase para llamar 
@@ -58,13 +58,22 @@ class Model {
       return (player.score);
     });
   }
-  // se actualiza con eso???? WHAT?
-// falta actualizar los valores
+
   addScoreAllPlayers(){
     let allScore = this.score(this.players);
-    allScore.reduce((back,now)=>{
+    return allScore.reduce((back,now)=>{
       return back + now;
     });
+    
+  }
+  down(player) {
+    player.score--;
+    this.notify();
+  }
+
+  up(player) {
+    player.score++;
+    this.notify();
   }
   subscribe(render) {
     this.render = render;
@@ -81,7 +90,7 @@ class Model {
  * Aquí cambia la sintaxis
  */
 const ShowPlayer = ({player})=>{
-  console.log({player})
+  
   return model.player.map((p, i)=>{
 	return (
 		<div className="player" key={player.id}>
@@ -112,7 +121,8 @@ const Header = ({ model }) => {
 				<table>
 					<tr>
 						<td>Players: </td>
-						<td className="letter"><strong>{model.players.lenght}</strong></td>
+						<td className="letter"><strong>{model.players.length}</strong></td>
+            
 					</tr>
 					<tr>
 						<td>Total Points: </td>
@@ -132,7 +142,8 @@ const Header = ({ model }) => {
 				</div>
 			</div>
 		</div>
-  	);
+    );
+    
 } 
 
 const List = ({ model }) => {
@@ -148,15 +159,17 @@ const List = ({ model }) => {
     
   );
 }  
+
+
 const Player = ({ player }) => {
   
   return (
     <div className='player' key={player.id}>
       <div className='player-name'>{player.name}</div>
       <div className='player-score counter'>
-        <button className='counter-action decrement'>-</button>
+        <button className='counter-action decrement'onClick={() => model.down(player)} >-</button>
         <span className='counter-score'>{player.score}</span>
-        <button className='counter-action increment' >+</button>
+        <button className='counter-action increment' onClick={() => model.up(player)} >+</button>
       </div>
     </div>
   );
